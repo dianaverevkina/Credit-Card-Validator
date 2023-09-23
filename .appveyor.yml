@@ -18,7 +18,7 @@ build_script:
 
 test_script:
   - npm run e2e    # команда для запуска e2e-тестов
-  - npm run lint && test       # команда для запуска юнит-тестов с покрытием
+  - npm run lint && npm test       # команда для запуска юнит-тестов с покрытием
 
 deploy_script:  # скрипт развёртывания
   - git config --global credential.helper store

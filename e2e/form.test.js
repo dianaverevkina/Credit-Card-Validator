@@ -6,7 +6,7 @@ describe('fgf', () => {
   jest.setTimeout(20000);
   beforeAll(async () => {
     browser = await puppeteer.launch({
-      headless: false,
+      headless: true,
       slowMo: 100,
       devtools: true,
     });
