@@ -4,7 +4,7 @@ describe('fgf', () => {
   let browser;
   let page;
   jest.setTimeout(20000);
-  beforeEach(async () => {
+  beforeAll(async () => {
     browser = await puppeteer.launch({
       headless: false,
       slowMo: 100,
@@ -44,7 +44,7 @@ describe('fgf', () => {
     await page.waitForSelector('.card-widget__answer_invalid');
   }, 15000);
 
-  afterEach(async () => {
+  afterAll(async () => {
     await browser.close();
   });
 });
