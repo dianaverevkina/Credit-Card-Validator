@@ -5,9 +5,6 @@ const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 module.exports = {
   target: 'web',
-  devServer: {
-    port: 8080,
-  },
   devtool: 'source-map',
   output: {
     path: path.resolve(__dirname, 'dist'),

@@ -1,21 +1,39 @@
 import puppeteer from 'puppeteer';
 
-describe('fgf', () => {
+const childProcess = require('child_process');
+
+describe('Credit Card Validator form', () => {
   let browser;
   let page;
-  jest.setTimeout(20000);
-  beforeAll(async () => {
-    browser = await puppeteer.launch({
-      headless: true,
-      slowMo: 100,
-      devtools: true,
-    });
+  let server;
 
+  const baseUrl = 'http://localhost:9000';
+  beforeAll(async () => {
+    server = await childProcess.fork(`${__dirname}/e2e.server.js`);
+    await new Promise((resolve, reject) => {
+      server.on('error', () => {
+        reject();
+      });
+      server.on('message', (message) => {
+        if (message === 'ok') {
+          resolve();
+        }
+      });
+    });
+    browser = await puppeteer.launch({
+      headless: false,
+      slowMo: 100,
+      devtools: false,
+    });
     page = await browser.newPage();
+  });
+  afterAll(async () => {
+    await browser.close();
+    server.kill();
   });
 
   test('Answer text should add  .card-widget__answer_valid if card number is valid', async () => {
-    await page.goto('http://localhost:8080');
+    await page.goto(baseUrl);
 
     await page.waitForSelector('.card-widget');
 
@@ -30,7 +48,7 @@ describe('fgf', () => {
   }, 15000);
 
   test('Answer text should add  .card-widget__answer_invalid if card number is invalid', async () => {
-    await page.goto('http://localhost:8080');
+    await page.goto(baseUrl);
 
     await page.waitForSelector('.card-widget');
 
@@ -43,8 +61,4 @@ describe('fgf', () => {
 
     await page.waitForSelector('.card-widget__answer_invalid');
   }, 15000);
-
-  afterAll(async () => {
-    await browser.close();
-  });
 });
